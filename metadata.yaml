@@ -1,0 +1,82 @@
+# metadata.yaml
+# Machine Learning — Semester Long Assignment
+# NIT Kurukshetra | MCA | 2025
+
+project:
+  title: "Water Quality Prediction in Kurukshetra"
+  domain: "Environmental Analytics / Water Quality Monitoring"
+  description: >
+    A machine learning approach to predict water potability and forecast pH variations
+    using open-source datasets and ensemble models. The project combines classification
+    (potable vs. non-potable) and regression (pH forecasting) to support
+    data-driven water quality monitoring in the Kurukshetra region.
+
+team:
+  - name: "Ravi Kant Gupta"
+    roll_number: "524410027"
+    role: "Data & Modeling Lead"
+  - name: "Ayushi Choyal"
+    roll_number: "524410017"
+    role: "Field Sampling & Sensors"
+  - name: "Shouryavi Awasthi"
+    roll_number: "524410028"
+    role: "Frontend, Deployment & Documentation"
+
+institution:
+  name: "National Institute of Technology, Kurukshetra"
+  department: "Department of Computer Applications"
+  course: "MCA – Machine Learning (Semester Long Project)"
+  academic_year: "2024–2025"
+
+datasets:
+  - name: "Water Potability Dataset"
+    source: "Kaggle (Aditya Kadiwal, 2020)"
+    link: "https://www.kaggle.com/adityakadiwal/water-potability"
+  - name: "Spatio-Temporal Water Quality Dataset"
+    source: "United States Geological Survey (USGS)"
+    paper_reference: "L. Zhao et al., ACM TSAS, 2019"
+    link: "https://doi.org/10.1145/3339823"
+
+methods:
+  classification_models:
+    - Logistic Regression (baseline)
+    - Random Forest Classifier
+    - XGBoost Classifier
+  regression_models:
+    - Linear Regression (pH forecasting)
+  evaluation_metrics:
+    - Accuracy
+    - Precision
+    - Recall
+    - F1-Score
+    - ROC-AUC
+    - R²
+    - RMSE
+
+results:
+  classification:
+    best_model: "Random Forest (Threshold = 0.36)"
+    f1_score: 0.5997
+    roc_auc: 0.6765
+  regression:
+    model: "Linear Regression"
+    r2_score: 0.8329
+    rmse: 0.0120
+
+ai_tools_used:
+  - name: "ChatGPT (GPT-5)"
+    purpose: "Code explanation, report formatting, documentation clarity"
+  - name: "Google Colab"
+    purpose: "Notebook execution and visualization"
+  - name: "Git & GitHub"
+    purpose: "Version control and project submission"
+
+submission:
+  report_file: "REPORT.md"
+  code_folder: "notebooks/"
+  visuals_folder: "Visualisations/"
+  slides_file: "slides/presentation.pdf"
+  submission_date: "2025-11-03"
+  presentation_window: "2025-10-29 to 2025-11-12"
+  status: "✅ Final Submission Complete"
+
