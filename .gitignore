@@ -27,9 +27,9 @@ wheels/
 # Identifying large files to ignore
 Data/water_dataset.mat
 *.pkl
-backend/app/model/*.pkl
-backend/app/model/*.json
-!backend/app/model/best_params.json
+# Allow backend model artifacts for CI/CD
+!backend/app/model/*.pkl
+!backend/app/model/*.json
 mlruns/
 mlflow.db
 

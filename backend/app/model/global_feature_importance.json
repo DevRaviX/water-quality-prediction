@@ -1,0 +1,38 @@
+[
+    {
+        "feature": "Sulfate",
+        "importance": 0.046324651943581055
+    },
+    {
+        "feature": "ph",
+        "importance": 0.04531405478396753
+    },
+    {
+        "feature": "Hardness",
+        "importance": 0.026154465868242882
+    },
+    {
+        "feature": "Chloramines",
+        "importance": 0.023233224881260745
+    },
+    {
+        "feature": "Solids",
+        "importance": 0.020087447144202495
+    },
+    {
+        "feature": "Conductivity",
+        "importance": 0.014657836916514034
+    },
+    {
+        "feature": "Turbidity",
+        "importance": 0.011987660881274209
+    },
+    {
+        "feature": "Trihalomethanes",
+        "importance": 0.011042183718765216
+    },
+    {
+        "feature": "Organic_carbon",
+        "importance": 0.010405597330789143
+    }
+]

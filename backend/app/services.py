@@ -39,6 +39,7 @@ class ModelService:
                     self.imputer_values = json.load(f)
 
             if os.path.exists(EXPLAINER_PATH):
+                try:
                     self.explainer = joblib.load(EXPLAINER_PATH)
                 except Exception as e:
                     print(f"Error loading explainer: {e}")
