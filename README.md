@@ -57,6 +57,13 @@ graph TB
 
 ---
 
+## ☁️ Deployment
+
+For production deployment to **AWS ECS (Fargate)**, please refer to our detailed guide:
+👉 [Deployment Guide](Documentation/AWS_ECS_DEPLOYMENT.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
