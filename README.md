@@ -1,43 +1,231 @@
-# Machine Learning — Semester Long Assignment
+# 💧 Water Quality Prediction System
 
-## Project Scope & Domains
-Projects should target real, relevant problems — preferably focused on campus or Kurukshetra, India. Example domains:
-- Energy use prediction (campus buildings)
-- Water quality monitoring
-- Campus crowd dynamics
-- Short-term local weather forecasting
-- Other data-driven campus/community problems
+[![CI](https://github.com/DevRaviX/water-quality-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/DevRaviX/water-quality-prediction/actions/workflows/ci.yml)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-311/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-00a393.svg)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Deliverables (required)
-Each team must produce all of the following in the repository:
+> **An end-to-end Machine Learning system for water potability classification and pH forecasting, with model explainability (SHAP), experiment tracking, and production-ready deployment.**
 
-1. **Proposal** — `PROPOSAL.pdf`
-2. **Working Code** — all Python code and notebooks under `notebooks/`
-3. **Data & EDA** — `data/` (dataset schema, not the whole dataset) and `notebooks/EDA.ipynb`
-6. **Final Report** —  `REPORT.pdf` (must include required sections below)
-7. **Presentation Slides** — `slides/` (PDF or PPTX)
-8. **metadata.yaml** — project metadata (see example)
+---
 
-### Final report MUST include:
-- At least **3 major project-specific conclusions**
-- At least **3 insights about the ML process** (data prep, modeling, evaluation)
-- **1–2 reflections on team collaboration**
-- **1–2 points on use & impact of AI tools** (declare any LLM/code tools & external code)
+## 🎯 Key Achievements
 
-## Timeline (strict)
-- **Team registration & topic list** — submit on portal — **1 Sep**
-- **Project Proposal** — upload to portal & push initial GitHub repo — **10 Sep**
-- **Data Collection & EDA** — `notebooks/EDA.ipynb` + EDA summary — **22 Sep**
-- **Baseline Model Implementation** — `notebooks/baseline.ipynb` + brief report — **6 Oct**
-- **Intermediate Report & Code** — full code + draft results + AI tool reflections — **17 Oct**
-- **Final Report & Code (publish)** — `REPORT.md` or `REPORT.pdf`, push to GitHub — **3 Nov**
-- **Presentations** — in-person, 20 min per group — **29 Oct – 12 Nov** (3–5 PM slots)
+| Metric | Value | Description |
+|:-------|:-----:|:------------|
+| **F1-Score** | 0.60 | 28.6% improvement over baseline |
+| **Recall** | 90% | Achieved via threshold optimization (T=0.36) |
+| **pH R²** | 0.83 | Strong temporal predictability |
+| **Features** | 9 | pH, Hardness, Sulfate, etc. |
 
-## Submission method
-- Work must be pushed to your project GitHub repo.
-- All the files will be downloaded on deadline day strictly, any submission after will not be considered for grading.
+---
 
+## 🏗️ Architecture
 
-## Academic integrity
-- Declare all AI/tools/external code in `REPORT.pdf` and in PR descriptions.
-- Use proper citations for datasets and external libraries.
+```mermaid
+graph TB
+    subgraph Frontend ["🖥️ React Frontend"]
+        UI[User Interface]
+        Charts[Recharts Visualizations]
+    end
+
+    subgraph Backend ["⚙️ FastAPI Backend"]
+        API[REST API]
+        Model[Random Forest Model]
+        SHAP[SHAP Explainer]
+    end
+
+    subgraph Data ["📊 Data Layer"]
+        CSV[(water_potability.csv)]
+        PKL[model.pkl]
+    end
+
+    UI --> API
+    API --> Model
+    API --> SHAP
+    Model --> PKL
+    CSV --> Model
+```
+
+---
+
+## 📸 Screenshots
+
+| Predictor | Analytics |
+|:---------:|:---------:|
+| ![Predictor](Visualisations/screenshots/predictor_desktop.png) | ![Analytics](Visualisations/screenshots/analytics_desktop.png) |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- Docker (optional)
+
+### Option 1: Docker (Recommended)
+
+```bash
+docker-compose up --build
+```
+
+Access the app at: http://localhost:3000
+
+### Option 2: Manual Setup
+
+**1. Backend**
+```bash
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start server
+uvicorn backend.app.main:app --reload --port 8000
+```
+
+**2. Frontend**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Access the app at: http://localhost:5173
+
+---
+
+## 📊 Model Explainability (SHAP)
+
+We use SHAP (SHapley Additive exPlanations) to provide transparent, interpretable predictions.
+
+### Global Feature Importance
+
+![SHAP Summary](Visualisations/shap/shap_summary_plot.png)
+
+### Individual Prediction Explanation
+
+![SHAP Waterfall](Visualisations/shap/shap_waterfall_sample_0.png)
+
+---
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+pytest tests/ -v
+```
+
+Current coverage: **80%+** across API endpoints and model logic.
+
+---
+
+## 📁 Project Structure
+
+```
+water-quality-prediction/
+├── backend/
+│   └── app/
+│       ├── main.py          # FastAPI entry point
+│       ├── api.py           # API endpoints
+│       ├── schema.py        # Pydantic models
+│       ├── services.py      # Business logic
+│       └── model/           # Trained models
+├── frontend/
+│   └── src/
+│       ├── components/      # React components
+│       ├── api.js           # API client
+│       └── App.jsx          # Main app
+├── notebooks/
+│   ├── EDA.ipynb            # Exploratory analysis
+│   └── advanced_classification.ipynb
+├── src/
+│   └── explainability/      # SHAP scripts
+├── tests/                   # pytest tests
+├── Visualisations/          # Generated plots
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
+```
+
+---
+
+## 🔌 API Reference
+
+### Predict Potability
+
+```http
+POST /api/predict
+```
+
+**Request:**
+```json
+{
+  "ph": 7.0,
+  "Hardness": 200.0,
+  "Solids": 20000.0,
+  "Chloramines": 7.0,
+  "Sulfate": 300.0,
+  "Conductivity": 400.0,
+  "Organic_carbon": 10.0,
+  "Trihalomethanes": 60.0,
+  "Turbidity": 4.0
+}
+```
+
+**Response:**
+```json
+{
+  "potability_score": 0.72,
+  "is_potable": true,
+  "status": "Safe",
+  "threshold_used": 0.36
+}
+```
+
+### Get Model Stats
+
+```http
+GET /api/stats
+```
+
+### Get Random Sample
+
+```http
+GET /api/sample
+```
+
+---
+
+## 📚 Methodology
+
+1. **Data Preprocessing**: Median imputation for missing values (pH, Sulfate, Trihalomethanes)
+2. **Class Imbalance**: Handled via `class_weight='balanced'`
+3. **Threshold Optimization**: Swept [0, 1] to maximize F1 while achieving ≥90% recall
+4. **Explainability**: SHAP TreeExplainer for Random Forest
+
+---
+
+## 👥 Team
+
+- **[Ravi Kant Gupta](https://github.com/DevRaviX)** — Data & Modeling Lead
+- **Ayushi Choyal** — Field Sampling & Sensors
+- **Shouryavi Awasthi** — Frontend & Documentation
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgements
+
+- [Water Potability Dataset](https://www.kaggle.com/adityakadiwal/water-potability) (Kaggle)
+- [USGS Spatio-Temporal Dataset](https://doi.org/10.1145/3339823)
+- [SHAP Library](https://github.com/slundberg/shap)

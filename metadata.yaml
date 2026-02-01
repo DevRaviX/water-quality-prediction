@@ -3,7 +3,7 @@
 # NIT Kurukshetra | MCA | 2025
 
 project:
-  title: "Water Quality Prediction in Kurukshetra"
+  title: "Water Quality Prediction"
   domain: "Environmental Analytics / Water Quality Monitoring"
   description: >
     A machine learning approach to predict water potability and forecast pH variations

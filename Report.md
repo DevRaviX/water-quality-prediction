@@ -1,4 +1,4 @@
-# 💧 Water Quality Prediction in Kurukshetra  
+# 💧 Water Quality Prediction  
 ### Final Report — Machine Learning Semester Project (MCA, NIT Kurukshetra)
 
 **Team Members:**  
