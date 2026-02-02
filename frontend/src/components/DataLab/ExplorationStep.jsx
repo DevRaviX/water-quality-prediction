@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Label, PieChart, Pie, Cell } from 'recharts';
 import { FileText, Ruler, AlertTriangle, Loader2, ArrowRight, Activity, Percent, Layers } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../api';
 
 const ExplorationStep = ({ sessionId, onNext }) => {
     const [data, setData] = useState(null);
@@ -13,7 +13,7 @@ const ExplorationStep = ({ sessionId, onNext }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/datalab/eda/${sessionId}`);
+                const res = await axios.get(`${API_BASE_URL}/api/datalab/eda/${sessionId}`);
                 setData(res.data);
             } catch (err) {
                 console.error(err);

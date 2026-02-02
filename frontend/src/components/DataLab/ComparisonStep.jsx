@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 
 import { Loader2, ArrowRight, ArrowLeft } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../api';
 
 const ComparisonStep = ({ sessionId, onNext, onBack }) => {
     const [data, setData] = useState(null);
@@ -14,7 +14,7 @@ const ComparisonStep = ({ sessionId, onNext, onBack }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/datalab/compare/${sessionId}`);
+                const res = await axios.get(`${API_BASE_URL}/api/datalab/compare/${sessionId}`);
                 setData(res.data.comparisons);
             } catch (err) {
                 console.error(err);

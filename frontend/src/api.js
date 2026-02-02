@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// Backend IP Configuration
+export const API_BASE_URL = "http://43.205.93.29:8000";
+
 const api = axios.create({
-    baseURL: '/api',
+    baseURL: API_BASE_URL,
 });
 
 export const predictWaterQuality = async (data) => {

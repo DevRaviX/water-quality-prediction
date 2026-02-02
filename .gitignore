@@ -46,3 +46,6 @@ frontend/.DS_Store
 
 # Logs
 *.log
+
+# Temporary Data
+temp_data/

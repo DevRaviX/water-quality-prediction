@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BrainCircuit, CheckCircle, Award, Target, Loader2, RefreshCw, Activity, Rocket, Download, Terminal, X, Settings, History, ChevronRight } from 'lucide-react';
 import { BarChart, Bar, AreaChart, Area, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, Label, Legend } from 'recharts';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../api';
 
 const TrainingStep = ({ sessionId }) => {
     const [results, setResults] = useState(null);
@@ -18,7 +18,7 @@ const TrainingStep = ({ sessionId }) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.post(`${API_URL}/api/datalab/train/${sessionId}`, config);
+            const res = await axios.post(`${API_BASE_URL}/api/datalab/train/${sessionId}`, config);
             setResults(res.data);
             if (res.data.history) {
                 setRunHistory(res.data.history);
@@ -386,7 +386,7 @@ const TrainingStep = ({ sessionId }) => {
 
                 <button
                     onClick={() => {
-                        window.open(`${API_URL}/api/datalab/download_model/${sessionId}`, '_blank');
+                        window.open(`${API_BASE_URL}/api/datalab/download_model/${sessionId}`, '_blank');
                     }}
                     style={{
                         background: 'var(--card-bg)',
@@ -476,7 +476,7 @@ const TrainingStep = ({ sessionId }) => {
                                 border: '1px solid #334155',
                                 overflowX: 'auto'
                             }}>
-                                <pre>{`curl -X POST ${API_URL}/api/predict \\
+                                <pre>{`curl -X POST ${API_BASE_URL}/api/predict \\
 -H "Content-Type: application/json" \\
 -d '{
     "ph": 7.2,
@@ -494,7 +494,7 @@ const TrainingStep = ({ sessionId }) => {
                             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
                                 <button
                                     onClick={() => {
-                                        navigator.clipboard.writeText(`curl -X POST ${API_URL}/api/predict -H "Content-Type: application/json" -d '{"ph": 7.2}'`);
+                                        navigator.clipboard.writeText(`curl -X POST ${API_BASE_URL}/api/predict -H "Content-Type: application/json" -d '{"ph": 7.2}'`);
                                         alert('Copied to clipboard!');
                                     }}
                                     style={{

@@ -3,7 +3,7 @@ import { UploadCloud, FileText, AlertCircle, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
 // Use same base URL logic as api.js (assuming simple axios call for now or importing instance)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../api';
 
 const UploadStep = ({ onSessionCreated }) => {
     const [isDragging, setIsDragging] = useState(false);
@@ -15,7 +15,7 @@ const UploadStep = ({ onSessionCreated }) => {
 
     const fetchPreview = async (sessionId) => {
         try {
-            const res = await axios.get(`${API_URL}/api/datalab/preview/${sessionId}`);
+            const res = await axios.get(`${API_BASE_URL}/api/datalab/preview/${sessionId}`);
             setPreviewData(res.data);
             setTempSessionId(sessionId);
         } catch (err) {
@@ -40,7 +40,7 @@ const UploadStep = ({ onSessionCreated }) => {
         formData.append('file', file);
 
         try {
-            const res = await axios.post(`${API_URL}/api/datalab/upload`, formData, {
+            const res = await axios.post(`${API_BASE_URL}/api/datalab/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
@@ -60,7 +60,7 @@ const UploadStep = ({ onSessionCreated }) => {
         setError(null);
 
         try {
-            const res = await axios.post(`${API_URL}/api/datalab/use_sample`);
+            const res = await axios.post(`${API_BASE_URL}/api/datalab/use_sample`);
             if (res.data.session_id) {
                 await fetchPreview(res.data.session_id);
             }

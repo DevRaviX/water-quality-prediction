@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Wand2, CheckCircle2, AlertTriangle, Loader2, ArrowRight } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../api';
 
 const CleaningStep = ({ sessionId, onNext }) => {
     const [columns, setColumns] = useState([]);
@@ -16,7 +16,7 @@ const CleaningStep = ({ sessionId, onNext }) => {
     useEffect(() => {
         const fetchNulls = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/datalab/eda/${sessionId}`);
+                const res = await axios.get(`${API_BASE_URL}/api/datalab/eda/${sessionId}`);
                 const nulls = res.data.null_counts;
                 const colsWithNulls = Object.entries(nulls)
                     .filter(([_, count]) => count > 0)
@@ -42,7 +42,7 @@ const CleaningStep = ({ sessionId, onNext }) => {
         setProcessing(true);
         setError(null);
         try {
-            await axios.post(`${API_URL}/api/datalab/impute/${sessionId}`, strategies);
+            await axios.post(`${API_BASE_URL}/api/datalab/impute/${sessionId}`, strategies);
             setSuccess(true);
         } catch (err) {
             console.error(err);
