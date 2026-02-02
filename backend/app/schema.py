@@ -1,15 +1,15 @@
 from pydantic import BaseModel, Field
 
 class WaterQualityInput(BaseModel):
-    ph: float = Field(..., description="pH level of the water", ge=0, le=14, example=7.0)
-    Hardness: float = Field(..., description="Hardness of water in mg/L", example=200.0)
-    Solids: float = Field(..., description="Total dissolved solids in ppm", example=20000.0)
-    Chloramines: float = Field(..., description="Amount of Chloramines in ppm", example=7.0)
-    Sulfate: float = Field(..., description="Amount of Sulfates dissolved in mg/L", example=300.0)
-    Conductivity: float = Field(..., description="Electrical conductivity of water in μS/cm", example=400.0)
-    Organic_carbon: float = Field(..., description="Amount of organic carbon in ppm", example=10.0)
-    Trihalomethanes: float = Field(..., description="Amount of Trihalomethanes in μg/L", example=60.0)
-    Turbidity: float = Field(..., description="Measure of light emitting property in NTU", example=4.0)
+    ph: float = Field(..., description="pH level of the water", ge=0, le=14, json_schema_extra={"example": 7.0})
+    Hardness: float = Field(..., description="Hardness of water in mg/L", json_schema_extra={"example": 200.0})
+    Solids: float = Field(..., description="Total dissolved solids in ppm", json_schema_extra={"example": 20000.0})
+    Chloramines: float = Field(..., description="Amount of Chloramines in ppm", json_schema_extra={"example": 7.0})
+    Sulfate: float = Field(..., description="Amount of Sulfates dissolved in mg/L", json_schema_extra={"example": 300.0})
+    Conductivity: float = Field(..., description="Electrical conductivity of water in μS/cm", json_schema_extra={"example": 400.0})
+    Organic_carbon: float = Field(..., description="Amount of organic carbon in ppm", json_schema_extra={"example": 10.0})
+    Trihalomethanes: float = Field(..., description="Amount of Trihalomethanes in μg/L", json_schema_extra={"example": 60.0})
+    Turbidity: float = Field(..., description="Measure of light emitting property in NTU", json_schema_extra={"example": 4.0})
 
 class FeatureContribution(BaseModel):
     feature: str

@@ -42,7 +42,7 @@ graph TB
 
     subgraph Data ["📊 Data Layer"]
         CSV[(water_potability.csv)]
-        Temp[Session Data (Uploads)]
+        Temp["Session Data (Uploads)"]
         PKL[model.pkl]
     end
 

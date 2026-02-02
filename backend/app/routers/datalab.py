@@ -76,6 +76,9 @@ async def get_eda(session_id: str):
             "histograms": histograms
         }
         
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error analyzing data: {str(e)}")
+
 @router.post("/impute/{session_id}")
 async def impute_data(session_id: str, strategies: dict[str, str]):
     """
@@ -113,6 +116,9 @@ async def impute_data(session_id: str, strategies: dict[str, str]):
             "cleaned_file": cleaned_location
         }
         
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error cleaning data: {str(e)}")
+
 @router.get("/compare/{session_id}")
 async def compare_data(session_id: str):
     """
@@ -165,6 +171,9 @@ async def compare_data(session_id: str):
 
         return {"comparisons": comparison_data}
         
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error comparing data: {str(e)}")
+
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
