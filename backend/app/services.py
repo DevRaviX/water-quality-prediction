@@ -10,7 +10,7 @@ MODEL_PATH = os.path.join(MODEL_DIR, 'water_quality_model.pkl')
 THRESHOLD_PATH = os.path.join(MODEL_DIR, 'optimal_threshold.json')
 IMPUTER_PATH = os.path.join(MODEL_DIR, 'imputer_values.json')
 # Assuming data is relative to the backend execution context for sampling
-DATA_PATH = os.path.join(os.path.dirname(__file__), '../../../Data/water_potability.csv')
+DATA_PATH = os.path.join(os.path.dirname(__file__), '../../Data/water_potability.csv')
 EXPLAINER_PATH = os.path.join(MODEL_DIR, 'shap_explainer.pkl')
 FEATURE_IMPORTANCE_PATH = os.path.join(MODEL_DIR, 'global_feature_importance.json')
 

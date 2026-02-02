@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
-import { AreaChart, Area, Scale } from 'lucide-react';
+
 import { Loader2, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -56,7 +56,7 @@ const ComparisonStep = ({ sessionId, onNext, onBack }) => {
                         <h4 style={{ marginBottom: '15px', color: 'var(--text-muted)', fontSize: '1rem', textAlign: 'center' }}>
                             {col} distribution
                         </h4>
-                        <div style={{ height: '220px', width: '100%' }}>
+                        <div style={{ height: '220px', width: '100%', minWidth: 0 }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={chartData}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />

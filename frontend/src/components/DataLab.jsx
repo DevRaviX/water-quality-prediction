@@ -78,7 +78,7 @@ const DataLab = () => {
                 minHeight: '400px'
             }}>
                 {activeStep === 'upload' && <UploadStep onSessionCreated={handleSessionCreated} />}
-                {activeStep === 'eda' && <ExplorationStep sessionId={sessionId} />}
+                {activeStep === 'eda' && <ExplorationStep sessionId={sessionId} onNext={() => setActiveStep('clean')} />}
                 {activeStep === 'clean' && <CleaningStep sessionId={sessionId} onNext={() => setActiveStep('compare')} />}
                 {activeStep === 'compare' && <ComparisonStep sessionId={sessionId} onNext={() => setActiveStep('train')} onBack={() => setActiveStep('clean')} />}
                 {activeStep === 'train' && <TrainingStep sessionId={sessionId} />}

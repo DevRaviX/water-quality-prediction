@@ -39,6 +39,23 @@ const UploadStep = ({ onSessionCreated }) => {
         }
     };
 
+    const handleUseSample = async () => {
+        setIsUploading(true);
+        setError(null);
+
+        try {
+            const res = await axios.post(`${API_URL}/api/datalab/use_sample`);
+            if (res.data.session_id) {
+                onSessionCreated(res.data.session_id, res.data.filename);
+            }
+        } catch (err) {
+            console.error(err);
+            setError(err.response?.data?.detail || 'Failed to load sample data.');
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     const onDragOver = (e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -130,6 +147,36 @@ const UploadStep = ({ onSessionCreated }) => {
                     <span>{error}</span>
                 </div>
             )}
+
+            <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <div style={{ height: '1px', flex: 1, background: 'var(--card-border)' }}></div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>OR</span>
+                <div style={{ height: '1px', flex: 1, background: 'var(--card-border)' }}></div>
+            </div>
+
+            <button
+                onClick={handleUseSample}
+                disabled={isUploading}
+                style={{
+                    marginTop: '20px',
+                    background: 'transparent',
+                    border: '1px solid var(--primary)',
+                    color: 'var(--primary)',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s'
+                }}
+            >
+                <FileText size={18} />
+                Use Sample Dataset (Water Potability)
+            </button>
         </div>
     );
 };

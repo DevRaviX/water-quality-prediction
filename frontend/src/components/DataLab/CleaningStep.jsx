@@ -45,7 +45,8 @@ const CleaningStep = ({ sessionId, onNext }) => {
             await axios.post(`${API_URL}/api/datalab/impute/${sessionId}`, strategies);
             setSuccess(true);
         } catch (err) {
-            setError('Failed to apply cleaning strategies.');
+            console.error(err);
+            setError(err.response?.data?.detail || 'Failed to apply cleaning strategies.');
         } finally {
             setProcessing(false);
         }

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { FileText, Ruler, AlertTriangle, Loader2 } from 'lucide-react';
+import { FileText, Ruler, AlertTriangle, Loader2, ArrowRight } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-const ExplorationStep = ({ sessionId }) => {
+const ExplorationStep = ({ sessionId, onNext }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -101,7 +101,7 @@ const ExplorationStep = ({ sessionId }) => {
                         return (
                             <div key={col} style={{ background: 'var(--card-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--card-border)' }}>
                                 <h4 style={{ marginBottom: '15px', color: 'var(--text-muted)', fontSize: '1rem' }}>{col}</h4>
-                                <div style={{ height: '200px', width: '100%' }}>
+                                <div style={{ height: '200px', width: '100%', minWidth: 0 }}>
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={histData}>
                                             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
@@ -119,6 +119,28 @@ const ExplorationStep = ({ sessionId }) => {
                         );
                     })}
                 </div>
+            </div>
+            {/* Navigation */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+                <button
+                    onClick={onNext}
+                    style={{
+                        background: 'var(--primary)',
+                        color: 'white',
+                        border: 'none',
+                        padding: '12px 24px',
+                        borderRadius: '30px',
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontWeight: '600',
+                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    }}
+                >
+                    Proceed to Cleaning <ArrowRight size={18} />
+                </button>
             </div>
         </div>
     );

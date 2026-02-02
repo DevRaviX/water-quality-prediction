@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { BrainCircuit, CheckCircle, Award, Target, Loader2, RefreshCw } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BrainCircuit, CheckCircle, Award, Target, Loader2, RefreshCw, Activity } from 'lucide-react';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from 'recharts';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -83,9 +83,29 @@ const TrainingStep = ({ sessionId }) => {
             }}>
                 <MetricCard icon={Award} label="Accuracy" value={results.accuracy} color="var(--primary)" />
                 <MetricCard icon={Target} label="F1 Score" value={results.f1_score} color="var(--accent)" />
+                <MetricCard icon={CheckCircle} label="Precision" value={results.precision} color="#8b5cf6" />
+                <MetricCard icon={BrainCircuit} label="Recall" value={results.recall} color="#ec4899" />
+                <MetricCard icon={Activity} label="AUC Score" value={results.auc_score} color="#eab308" />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '40px', marginBottom: '40px' }}>
+                {/* ROC Curve */}
+                <div style={{ background: 'var(--card-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--card-border)' }}>
+                    <h3 style={{ marginBottom: '20px', fontSize: '1.2rem' }}>ROC Curve (TPR vs FPR)</h3>
+                    <div style={{ height: '300px', width: '100%', minWidth: 0 }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={results.roc_curve}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                                <XAxis dataKey="fpr" type="number" domain={[0, 1]} tick={{ fill: '#94a3b8' }} label={{ value: 'False Positive Rate', position: 'insideBottom', offset: -10, fill: '#94a3b8' }} />
+                                <YAxis dataKey="tpr" type="number" domain={[0, 1]} tick={{ fill: '#94a3b8' }} label={{ value: 'True Positive Rate', angle: -90, position: 'insideLeft', fill: '#94a3b8' }} />
+                                <Tooltip contentStyle={{ background: '#1e293b', border: 'none' }} />
+                                <Line type="monotone" dataKey="tpr" stroke="var(--primary)" strokeWidth={3} dot={false} />
+                                {/* Diagonal random guess line */}
+                                <Line type="monotone" dataKey="fpr" stroke="rgba(255,255,255,0.2)" strokeDasharray="5 5" dot={false} strokeWidth={1} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
                 {/* Confusion Matrix */}
                 <div style={{ background: 'var(--card-bg)', padding: '20px', borderRadius: '16px', border: '1px solid var(--card-border)' }}>
                     <h3 style={{ marginBottom: '20px', fontSize: '1.2rem' }}>Confusion Matrix</h3>

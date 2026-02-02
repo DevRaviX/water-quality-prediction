@@ -1,7 +1,7 @@
 import shutil
 import uuid
 import os
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Body
 import pandas as pd
 
 router = APIRouter()
@@ -31,6 +31,45 @@ async def upload_dataset(file: UploadFile = File(...)):
         if os.path.exists(file_location):
             os.remove(file_location)
         raise HTTPException(status_code=400, detail=f"Invalid CSV file: {str(e)}")
+        
+    return {
+        "session_id": session_id,
+        "filename": file.filename,
+        "message": "Upload successful"
+    }
+
+@router.post("/use_sample")
+async def use_sample():
+    """
+    Copies the default dataset to a new session.
+    """
+    session_id = str(uuid.uuid4())
+    # Path relative to backend execution: ../../../Data/water_potability.csv
+    # Adjust based on project structure. verified in services.py as ../../Data/water_potability.csv relative to services.py
+    # Here router is in backend/app/routers, so root is ../../..
+    # But services.py used os.path.dirname(__file__)
+    
+    # Safe approach: usage absolute path logic similar to services.py
+    # Base dir of app: backend/app
+    
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # Water Quality Prediction System
+    DATA_PATH = os.path.join(BASE_DIR, "Data", "water_potability.csv")
+    
+    dest_path = os.path.join(TEMP_DATA_DIR, f"{session_id}_raw.csv")
+    
+    if not os.path.exists(DATA_PATH):
+        raise HTTPException(status_code=404, detail="Sample dataset not found on server.")
+        
+    try:
+        shutil.copy(DATA_PATH, dest_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to load sample data: {str(e)}")
+        
+    return {
+        "session_id": session_id,
+        "filename": "water_potability.csv (Sample)",
+        "message": "Sample data loaded successfully"
+    }
 
 import numpy as np
 
@@ -80,7 +119,7 @@ async def get_eda(session_id: str):
         raise HTTPException(status_code=500, detail=f"Error analyzing data: {str(e)}")
 
 @router.post("/impute/{session_id}")
-async def impute_data(session_id: str, strategies: dict[str, str]):
+async def impute_data(session_id: str, strategies: dict[str, str] = Body(...)):
     """
     Applies imputation strategies to the dataset.
     strategies: {"column_name": "mean" | "median" | "mode" | "drop_row"}
@@ -176,7 +215,10 @@ async def compare_data(session_id: str):
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score, f1_score, confusion_matrix, 
+    precision_score, recall_score, roc_auc_score, roc_curve
+)
 
 @router.post("/train/{session_id}")
 async def train_model(session_id: str):
@@ -213,10 +255,27 @@ async def train_model(session_id: str):
         model.fit(X_train, y_train)
         
         y_pred = model.predict(X_test)
+        y_prob = model.predict_proba(X_test)[:, 1]  # Probabilities for positive class
         
         acc = accuracy_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred, average='weighted')
+        precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
+        recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
         cm = confusion_matrix(y_test, y_pred).tolist()
+        
+        # ROC/AUC (only valid for binary classification usually, but we handle it safely)
+        auc_score = 0
+        roc_data = []
+        try:
+            if len(np.unique(y)) == 2:
+                auc_score = roc_auc_score(y_test, y_prob)
+                fpr, tpr, _ = roc_curve(y_test, y_prob)
+                # Downsample ROC curve for JSON size if needed, getting ~20 points
+                indices = np.linspace(0, len(fpr)-1, 20, dtype=int)
+                for i in indices:
+                    roc_data.append({"fpr": float(fpr[i]), "tpr": float(tpr[i])})
+        except Exception as ex:
+            print(f"ROC Calculation skipped: {ex}")
         
         # Feature Importance
         feature_importance = []
@@ -227,11 +286,15 @@ async def train_model(session_id: str):
                 for col, imp in zip(X.columns, importances)
             ]
             feature_importance.sort(key=lambda x: x['importance'], reverse=True)
-            feature_importance = feature_importance[:5] # Top 5
+            feature_importance = feature_importance[:10] # Top 10
             
         return {
             "accuracy": float(acc),
             "f1_score": float(f1),
+            "precision": float(precision),
+            "recall": float(recall),
+            "auc_score": float(auc_score),
+            "roc_curve": roc_data,
             "confusion_matrix": cm,
             "feature_importance": feature_importance,
             "target": target_col
