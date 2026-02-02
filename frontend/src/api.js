@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Backend IP Configuration
-export const API_BASE_URL = "http://43.205.93.29:8000";
+export const API_BASE_URL = "";
 
 const api = axios.create({
     baseURL: API_BASE_URL,
