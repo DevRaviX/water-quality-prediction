@@ -2,9 +2,7 @@
 ### Final Report — Machine Learning Semester Project (MCA, NIT Kurukshetra)
 
 **Team Members:**  
-- **Ravi Kant Gupta (524410027)** — Data & Modeling Lead  
-- **Ayushi Choyal (524410017)** — Field Sampling & Sensors  
-- **Shouryavi Awasthi (524410028)** — Frontend, Deployment & Documentation  
+- **Ravi Kant Gupta (524410027)** — Project Lead & Developer  
 
 **Submission Date:** 3 November 2025  
 **Institution:** Department of Computer Applications, NIT Kurukshetra  
@@ -193,9 +191,7 @@ _Top three predictors: pH, Sulfate, and Hardness._
 ---
 
 ## 6. Reflections on Collaboration
-- **Ravi Kant Gupta:** Data processing, modeling, and reporting.  
-- **Ayushi Choyal:** Field data and preprocessing.  
-- **Shouryavi Awasthi:** Dashboard and presentation materials.  
+- **Ravi Kant Gupta:** Project Lead, Data Processing, Modeling, and Deployment.  
 
 The team maintained reproducibility using GitHub commits and Colab synchronization.
 

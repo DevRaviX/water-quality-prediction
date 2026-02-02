@@ -7,6 +7,39 @@ const ResultCard = ({ result, reset }) => {
     const explanation = result.explanation || [];
     const topFeatures = explanation.slice(0, 5);
 
+    // Score Recalibration Logic (Psychological UX)
+    // Threshold (e.g., 0.35) should always effectively be "50%" to the user.
+    // If Score < Threshold: Normalized = (Score / Threshold) * 50
+    // If Score >= Threshold: Normalized = 50 + ((Score - Threshold) / (1 - Threshold) * 50)
+    const rawScore = result.potability_score;
+    const threshold = result.threshold_used || 0.35; // Default if missing
+
+    let displayScore;
+    if (rawScore < threshold) {
+        displayScore = (rawScore / threshold) * 50;
+    } else {
+        displayScore = 50 + ((rawScore - threshold) / (1 - threshold)) * 50;
+    }
+
+    // Determine dominant factors for caption
+    const positiveFactors = topFeatures.filter(f => f.contribution > 0).map(f => f.feature);
+    const negativeFactors = topFeatures.filter(f => f.contribution < 0).map(f => f.feature);
+
+    let caption = "The water quality analysis is inconclusive.";
+    if (isSafe) {
+        if (negativeFactors.length > 0) {
+            caption = `Although ${negativeFactors.slice(0, 2).join(' and ')} negatively impacted the score, the overall quality remains within safe limits.`;
+        } else {
+            caption = "All major quality indicators suggest this water is safe for consumption.";
+        }
+    } else {
+        if (positiveFactors.length > 0) {
+            caption = `Despite good levels of ${positiveFactors.slice(0, 2).join(' and ')}, the ${negativeFactors[0]} levels make this unsafe.`;
+        } else {
+            caption = "Multiple critical quality parameters exceed safe limits.";
+        }
+    }
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -17,8 +50,12 @@ const ResultCard = ({ result, reset }) => {
                 {isSafe ? <CheckCircle size={64} /> : <XCircle size={64} />}
             </div>
             <h2>{isSafe ? 'Water is Safe' : 'Not Potable'}</h2>
-            <p className="confidence">Confidence Score: {(result.potability_score * 100).toFixed(1)}%</p>
-            <p className="threshold-info">Threshold used: {result.threshold_used}</p>
+
+            {/* Display Recalibrated Score */}
+            <p className="confidence font-mono" title={`Raw Model Probability: ${(rawScore * 100).toFixed(1)}%`}>
+                Confidence Score: {displayScore.toFixed(1)}%
+            </p>
+            <p className="threshold-info">Based on optimized threshold: {threshold}</p>
 
             {explanation.length > 0 && (
                 <div className="explanation-section" style={{ marginTop: '1.5rem', width: '100%' }}>
@@ -30,7 +67,7 @@ const ResultCard = ({ result, reset }) => {
                                 <YAxis
                                     dataKey="feature"
                                     type="category"
-                                    width={100}
+                                    width={140}
                                     tick={{ fill: '#e2e8f0', fontSize: 12 }}
                                     axisLine={false}
                                     tickLine={false}
@@ -61,6 +98,19 @@ const ResultCard = ({ result, reset }) => {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
+                    {/* Dynamic Caption */}
+                    <p style={{
+                        marginTop: '15px',
+                        fontSize: '0.85rem',
+                        color: 'var(--text-muted)',
+                        fontStyle: 'italic',
+                        textAlign: 'center',
+                        lineHeight: '1.5',
+                        borderTop: '1px solid var(--card-border)',
+                        paddingTop: '10px'
+                    }}>
+                        {caption}
+                    </p>
                 </div>
             )}
 

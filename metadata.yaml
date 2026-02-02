@@ -13,14 +13,8 @@ project:
 
 team:
   - name: "Ravi Kant Gupta"
-    roll_number: "524410027"
-    role: "Data & Modeling Lead"
-  - name: "Ayushi Choyal"
-    roll_number: "524410017"
-    role: "Field Sampling & Sensors"
-  - name: "Shouryavi Awasthi"
-    roll_number: "524410028"
-    role: "Frontend, Deployment & Documentation"
+    github: "DevRaviX"
+    role: "Project Lead & Developer"
 
 institution:
   name: "National Institute of Technology, Kurukshetra"

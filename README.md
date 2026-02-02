@@ -232,9 +232,7 @@ GET /api/sample
 
 ## 👥 Team
 
-- **[Ravi Kant Gupta](https://github.com/DevRaviX)** — Data & Modeling Lead
-- **[Ayushi Choyal](https://github.com/KA1117)** — Field Sampling & Sensors
-- **[Shouryavi Awasthi](https://github.com/shouryaviawasthi)** — Frontend & Documentation
+- **[Ravi Kant Gupta](https://github.com/DevRaviX)** — Project Lead & Developer
 
 ---
 

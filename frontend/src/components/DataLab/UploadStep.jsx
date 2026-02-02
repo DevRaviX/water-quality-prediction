@@ -10,6 +10,22 @@ const UploadStep = ({ onSessionCreated }) => {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState(null);
 
+    const [previewData, setPreviewData] = useState(null);
+    const [tempSessionId, setTempSessionId] = useState(null);
+
+    const fetchPreview = async (sessionId) => {
+        try {
+            const res = await axios.get(`${API_URL}/api/datalab/preview/${sessionId}`);
+            setPreviewData(res.data);
+            setTempSessionId(sessionId);
+        } catch (err) {
+            console.error("Preview fetch failed", err);
+            // Show error but allow manual continue
+            setError("Could not load preview. You can still proceed.");
+            setTempSessionId(sessionId); // Allow continue even if preview fails
+        }
+    };
+
     const handleUpload = async (file) => {
         if (!file) return;
         if (!file.name.endsWith('.csv')) {
@@ -29,7 +45,7 @@ const UploadStep = ({ onSessionCreated }) => {
             });
 
             if (res.data.session_id) {
-                onSessionCreated(res.data.session_id, res.data.filename);
+                await fetchPreview(res.data.session_id);
             }
         } catch (err) {
             console.error(err);
@@ -46,7 +62,7 @@ const UploadStep = ({ onSessionCreated }) => {
         try {
             const res = await axios.post(`${API_URL}/api/datalab/use_sample`);
             if (res.data.session_id) {
-                onSessionCreated(res.data.session_id, res.data.filename);
+                await fetchPreview(res.data.session_id);
             }
         } catch (err) {
             console.error(err);
@@ -55,6 +71,77 @@ const UploadStep = ({ onSessionCreated }) => {
             setIsUploading(false);
         }
     };
+
+    if (previewData && tempSessionId) {
+        return (
+            <div className="upload-container" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                <h2 style={{ marginBottom: '1rem', fontWeight: '600' }}>Data Preview</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
+                    Here are the first 5 rows. Does this look right?
+                </p>
+
+                <div style={{
+                    overflowX: 'auto',
+                    background: 'var(--card-bg)',
+                    borderRadius: '12px',
+                    border: '1px solid var(--card-border)',
+                    marginBottom: '30px'
+                }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                        <thead>
+                            <tr style={{ background: 'var(--card-border)' }}>
+                                {previewData.columns.map(col => (
+                                    <th key={col} style={{ padding: '12px', textAlign: 'left', color: 'var(--text-muted)' }}>{col}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {previewData.rows.map((row, i) => (
+                                <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    {row.map((cell, j) => (
+                                        <td key={j} style={{ padding: '12px' }}>{cell}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                    <button
+                        onClick={() => { setPreviewData(null); setTempSessionId(null); }}
+                        style={{
+                            background: 'transparent',
+                            color: 'var(--text-muted)',
+                            border: '1px solid var(--card-border)',
+                            padding: '12px 24px',
+                            borderRadius: '30px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Back
+                    </button>
+                    <button
+                        onClick={() => onSessionCreated(tempSessionId, "Current Dataset")}
+                        style={{
+                            background: 'var(--primary)',
+                            color: 'white',
+                            border: 'none',
+                            padding: '12px 30px',
+                            borderRadius: '30px',
+                            cursor: 'pointer',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}
+                    >
+                        Confirm & Analyze <FileText size={18} />
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     const onDragOver = (e) => {
         e.preventDefault();
@@ -87,7 +174,7 @@ const UploadStep = ({ onSessionCreated }) => {
                 style={{
                     border: '2px dashed var(--card-border)',
                     borderRadius: '16px',
-                    padding: '60px 20px',
+                    padding: '30px 20px',
                     background: isDragging ? 'rgba(59, 130, 246, 0.1)' : 'var(--card-bg)',
                     borderColor: isDragging ? 'var(--primary)' : 'var(--card-border)',
                     cursor: 'pointer',

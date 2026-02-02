@@ -29,9 +29,9 @@ const DataLab = () => {
         <div className="datalab-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
 
             {/* Header */}
-            <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '10px' }}>AutoML Data Lab</h1>
-                <p style={{ color: 'var(--text-muted)' }}>
+            <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'baseline', gap: '15px', flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: '700', margin: 0 }}>AutoML Data Lab</h1>
+                <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
                     End-to-end Machine Learning pipeline: Upload, Analyze, Clean, and Train.
                 </p>
             </div>
