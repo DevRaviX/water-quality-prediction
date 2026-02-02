@@ -9,14 +9,17 @@
 
 ---
 
-## 🎯 Key Achievements
+## 🧪 **NEW: AutoML Data Lab**
 
-| Metric | Value | Description |
-|:-------|:-----:|:------------|
-| **F1-Score** | 0.60 | 28.6% improvement over baseline |
-| **Recall** | 90% | Achieved via threshold optimization (T=0.36) |
-| **pH R²** | 0.83 | Strong temporal predictability |
-| **Features** | 9 | pH, Hardness, Sulfate, etc. |
+Transform raw data into insights with our interactive end-to-end pipeline:
+
+1.  **Upload**: Drag & drop any CSV dataset.
+2.  **Analyze**: Instant EDA with automatic histograms and null-value detection.
+3.  **Clean**: Interactively impute missing values (Mean, Median, Mode, or Drop).
+4.  **Verify**: Side-by-side "Before vs After" visualization to ensure data integrity.
+5.  **Train**: Build a custom Random Forest model and view performance metrics (Accuracy, F1, Confusion Matrix).
+
+> **Access the Data Lab at:** `/datalab`
 
 ---
 
@@ -26,24 +29,30 @@
 graph TB
     subgraph Frontend ["🖥️ React Frontend"]
         UI[User Interface]
+        Lab[Data Lab UI]
         Charts[Recharts Visualizations]
     end
 
     subgraph Backend ["⚙️ FastAPI Backend"]
         API[REST API]
-        Model[Random Forest Model]
+        Model[Inference Model]
+        Trainer[AutoML Trainer]
         SHAP[SHAP Explainer]
     end
 
     subgraph Data ["📊 Data Layer"]
         CSV[(water_potability.csv)]
+        Temp[Session Data (Uploads)]
         PKL[model.pkl]
     end
 
     UI --> API
+    Lab --> API
     API --> Model
+    API --> Trainer
     API --> SHAP
     Model --> PKL
+    Trainer --> Temp
     CSV --> Model
 ```
 
@@ -51,16 +60,15 @@ graph TB
 
 ## 📸 Screenshots
 
-| Predictor | Analytics |
-|:---------:|:---------:|
-| ![Predictor](Visualisations/screenshots/predictor_desktop.png) | ![Analytics](Visualisations/screenshots/analytics_desktop.png) |
+| Predictor | Analytics | Data Lab |
+|:---------:|:---------:|:--------:|
+| ![Predictor](Visualisations/screenshots/predictor_desktop.png) | ![Analytics](Visualisations/screenshots/analytics_desktop.png) | *Coming Soon* |
 
 ---
 
 ## ☁️ Deployment
 
-For production deployment to **AWS ECS (Fargate)**, please refer to our detailed guide:
-👉 [Deployment Guide](Documentation/AWS_ECS_DEPLOYMENT.md)
+For production deployment to **AWS ECS (Fargate)**, please refer to the project documentation (if available) or standard Docker deployment practices.
 
 ---
 
@@ -77,7 +85,9 @@ For production deployment to **AWS ECS (Fargate)**, please refer to our detailed
 docker-compose up --build
 ```
 
-Access the app at: http://localhost:3000
+Access the app at:
+- **Predictor**: http://localhost:8000
+- **Data Lab**: http://localhost:8000/datalab
 
 ### Option 2: Manual Setup
 
@@ -138,13 +148,16 @@ water-quality-prediction/
 ├── backend/
 │   └── app/
 │       ├── main.py          # FastAPI entry point
-│       ├── api.py           # API endpoints
+│       ├── api.py           # Inference endpoints
+│       ├── routers/
+│       │   └── datalab.py   # AutoML endpoints
 │       ├── schema.py        # Pydantic models
 │       ├── services.py      # Business logic
 │       └── model/           # Trained models
 ├── frontend/
 │   └── src/
 │       ├── components/      # React components
+│       │   └── DataLab/     # AutoML components
 │       ├── api.js           # API client
 │       └── App.jsx          # Main app
 ├── notebooks/
@@ -220,8 +233,8 @@ GET /api/sample
 ## 👥 Team
 
 - **[Ravi Kant Gupta](https://github.com/DevRaviX)** — Data & Modeling Lead
-- **Ayushi Choyal** — Field Sampling & Sensors
-- **Shouryavi Awasthi** — Frontend & Documentation
+- **[Ayushi Choyal](https://github.com/KA1117)** — Field Sampling & Sensors
+- **[Shouryavi Awasthi](https://github.com/shouryaviawasthi)** — Frontend & Documentation
 
 ---
 

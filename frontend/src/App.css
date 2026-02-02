@@ -172,7 +172,8 @@ h1 {
   flex-direction: column;
   gap: 30px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .form-header {

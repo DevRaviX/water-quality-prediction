@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from .api import router
+from .routers import datalab
 import os
 
 app = FastAPI(title="Water Quality Prediction System", version="1.0.0")
@@ -17,6 +18,7 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/api")
+app.include_router(datalab.router, prefix="/api/datalab", tags=["DataLab"])
 
 # Serve React Static Files
 FRONTEND_DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")

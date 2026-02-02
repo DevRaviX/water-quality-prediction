@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, Activity, Droplets } from 'lucide-react';
+import { Home, Activity, Droplets, FlaskConical } from 'lucide-react';
 import InputForm from './components/InputForm';
 import StatsDashboard from './components/StatsDashboard';
+import DataLab from './components/DataLab';
 import './App.css';
 
 // Nav Component for reuse
@@ -18,6 +19,10 @@ const NavBase = ({ className, itemClass }) => {
       <Link to="/analytics" className={`${itemClass} ${isActive('/analytics')}`}>
         <Activity size={20} />
         <span>Analytics</span>
+      </Link>
+      <Link to="/datalab" className={`${itemClass} ${isActive('/datalab')}`}>
+        <FlaskConical size={20} />
+        <span>Data Lab</span>
       </Link>
     </nav>
   );
@@ -60,6 +65,7 @@ function App() {
         <Routes>
           <Route path="/" element={<InputForm />} />
           <Route path="/analytics" element={<StatsDashboard />} />
+          <Route path="/datalab" element={<DataLab />} />
         </Routes>
       </Layout>
     </Router>
