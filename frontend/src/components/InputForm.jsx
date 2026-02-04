@@ -167,7 +167,7 @@ const SmartInput = ({ name, value, onChange, range, tooltip }) => {
 };
 
 const InputGroup = ({ title, icon: Icon, color, fields, formData, handleChange }) => (
-    <div style={{
+    <div className="input-group-card" style={{
         background: 'var(--card-bg)',
         border: '1px solid var(--card-border)',
         borderRadius: '16px',
@@ -220,17 +220,18 @@ const InputForm = () => {
         } catch (err) {
             console.error(err);
             // Fallback
-            setFormData({
-                ph: '7.0',
-                Hardness: '200',
-                Solids: '20000',
-                Chloramines: '7.0',
-                Sulfate: '300',
-                Conductivity: '400',
-                Organic_carbon: '10.0',
-                Trihalomethanes: '60.0',
-                Turbidity: '4.0'
+            // Fallback: Generate random values within reference ranges
+            const randomData = {};
+            Object.keys(initialFormState).forEach(key => {
+                const range = referenceRanges[key];
+                if (range) {
+                    const randomVal = Math.random() * (range.max - range.min) + range.min;
+                    randomData[key] = randomVal.toFixed(2);
+                } else {
+                    randomData[key] = '0';
+                }
             });
+            setFormData(randomData);
         } finally {
             setLoadingSample(false);
         }
@@ -276,11 +277,7 @@ const InputForm = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: '24px'
-                }}>
+                <div className="input-grid">
                     <InputGroup
                         title="Physical Properties"
                         icon={Gauge}
@@ -324,6 +321,51 @@ const InputForm = () => {
 
             <style>{`
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        @media (max-width: 768px) {
+            .form-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .sample-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .input-group-card {
+                padding: 16px !important;
+            }
+            
+            .input-group input {
+                padding: 16px !important; /* Larger touch target */
+                font-size: 16px !important; /* Prevent iOS zoom */
+            }
+            
+            .label-row {
+                margin-bottom: 6px !important;
+            }
+
+            .submit-btn {
+                position: fixed;
+                bottom: 80px; /* Above nav if exists, or just bottom */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90% !important;
+                max-width: none !important;
+                z-index: 50;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                margin: 0 !important;
+            }
+            
+            /* Add padding to form to account for fixed button */
+            form {
+                padding-bottom: 100px;
+            }
+        }
       `}</style>
         </div>
     );

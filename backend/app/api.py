@@ -1,7 +1,6 @@
-from fastapi import APIRouter, HTTPException
 from .schema import (
     WaterQualityInput, PredictionResponse, StatsResponse,
-    HealthResponse, pHForecastInput, pHForecastResponse
+    HealthResponse, pHForecastInput, pHForecastResponse, IoTReading
 )
 from .services import model_service
 import numpy as np
@@ -89,3 +88,26 @@ async def forecast_ph(input_data: pHForecastInput):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@router.post("/iot/readings")
+async def receive_iot_reading(reading: IoTReading):
+    """
+    Receive real-time data from ESP32.
+    """
+    try:
+        # In a real app, you would save this to a timeseries DB.
+        # For now, we'll just log it and potentially return it for live view.
+        print(f"Received IoT Data: {reading}")
+        
+        # Determine status based on thresholds (Simple Logic)
+        status = "Safe"
+        if reading.ph < 6.5 or reading.ph > 8.5 or reading.turbidity > 5:
+            status = "Unsafe"
+            
+        return {
+            "status": "received",
+            "analysis": status,
+            "timestamp": "now" # In real app use datetime.now()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

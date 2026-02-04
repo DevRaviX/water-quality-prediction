@@ -133,8 +133,10 @@ h1 {
 
 .main-content {
   flex: 1;
-  padding: 20px;
-  padding-bottom: 100px;
+  padding: 16px;
+  /* Reduced from 20px for mobile */
+  padding-bottom: 120px;
+  /* More space for fixed bottom nav/buttons */
   z-index: 5;
 }
 

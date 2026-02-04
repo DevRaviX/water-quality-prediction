@@ -57,3 +57,11 @@ class pHForecastResponse(BaseModel):
     trend: str  # "stable", "increasing", "decreasing"
     confidence: float
 
+
+class IoTReading(BaseModel):
+    sensor_id: str
+    ph: float
+    tds: float
+    turbidity: float
+    temperature: float
+
