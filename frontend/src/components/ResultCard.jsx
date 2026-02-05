@@ -68,7 +68,7 @@ const ResultCard = ({ result, reset }) => {
                                     dataKey="feature"
                                     type="category"
                                     width={140}
-                                    tick={{ fill: '#e2e8f0', fontSize: 12 }}
+                                    tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
                                     axisLine={false}
                                     tickLine={false}
                                 />
@@ -78,10 +78,10 @@ const ResultCard = ({ result, reset }) => {
                                         if (active && payload && payload.length) {
                                             const data = payload[0].payload;
                                             return (
-                                                <div style={{ backgroundColor: '#1e293b', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #334155', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
-                                                    <p style={{ margin: 0, fontWeight: '600', color: '#f8fafc' }}>{data.feature}</p>
-                                                    <p style={{ margin: '0.25rem 0', color: '#cbd5e1', fontSize: '0.9rem' }}>Value: {data.value.toFixed(2)}</p>
-                                                    <p style={{ margin: 0, fontWeight: '500', color: data.contribution > 0 ? '#4ade80' : '#f87171' }}>
+                                                <div style={{ backgroundColor: 'var(--card-bg)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--card-border)', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
+                                                    <p style={{ margin: 0, fontWeight: '600', color: 'var(--text)' }}>{data.feature}</p>
+                                                    <p style={{ margin: '0.25rem 0', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Value: {data.value.toFixed(2)}</p>
+                                                    <p style={{ margin: 0, fontWeight: '500', color: data.contribution > 0 ? 'var(--safe)' : 'var(--unsafe)' }}>
                                                         Impact: {data.contribution > 0 ? '+' : ''}{data.contribution.toFixed(4)}
                                                     </p>
                                                 </div>
@@ -92,7 +92,7 @@ const ResultCard = ({ result, reset }) => {
                                 />
                                 <Bar dataKey="contribution" radius={[2, 2, 2, 2]}>
                                     {topFeatures.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.contribution > 0 ? '#4ade80' : '#f87171'} />
+                                        <Cell key={`cell-${index}`} fill={entry.contribution > 0 ? 'var(--safe)' : 'var(--unsafe)'} />
                                     ))}
                                 </Bar>
                             </BarChart>

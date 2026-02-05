@@ -44,15 +44,15 @@ const StatsDashboard = () => {
                 className="stat-card"
             >
                 <h3>
-                    <TrendingUp size={20} className="text-green-400" />
+                    <TrendingUp size={20} style={{ color: 'var(--safe)' }} />
                     Classification Performance
                 </h3>
                 <div className="stat-value font-mono">0.60</div>
                 <div className="stat-label flex items-center gap-2">
-                    <span className="text-green-400 bg-green-400/10 px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+                    <span style={{ color: 'var(--safe)', background: 'var(--safe-bg)' }} className="px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
                         <ArrowUpRight size={12} /> +28.6%
                     </span>
-                    <span className="text-gray-500">vs Logistic Regression</span>
+                    <span style={{ color: 'var(--text-muted)' }}>vs Logistic Regression</span>
                 </div>
             </motion.div>
 
@@ -63,15 +63,15 @@ const StatsDashboard = () => {
                 className="stat-card"
             >
                 <h3>
-                    <TrendingUp size={20} className="text-blue-400" />
+                    <TrendingUp size={20} style={{ color: 'var(--primary)' }} />
                     Forecasting Accuracy
                 </h3>
                 <div className="stat-value font-mono">0.83</div>
                 <div className="stat-label flex items-center gap-2">
-                    <span className="text-blue-400 bg-blue-400/10 px-2 py-1 rounded text-xs font-bold">
+                    <span style={{ color: 'var(--primary)', background: 'rgba(59, 130, 246, 0.1)' }} className="px-2 py-1 rounded text-xs font-bold">
                         R² Score
                     </span>
-                    <span className="text-gray-500">High Temporal Correlation</span>
+                    <span style={{ color: 'var(--text-muted)' }}>High Temporal Correlation</span>
                 </div>
             </motion.div>
 
@@ -117,10 +117,10 @@ const StatsDashboard = () => {
                                     <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                            <XAxis dataKey="recall" label={{ value: 'Recall', position: 'insideBottom', offset: -5, fill: '#94a3b8' }} tick={{ fill: '#94a3b8' }} />
-                            <YAxis label={{ value: 'Precision', angle: -90, position: 'insideLeft', fill: '#94a3b8' }} tick={{ fill: '#94a3b8' }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--card-border)" />
+                            <XAxis dataKey="recall" label={{ value: 'Recall', position: 'insideBottom', offset: -5, fill: 'var(--text-muted)' }} tick={{ fill: 'var(--text-muted)' }} />
+                            <YAxis label={{ value: 'Precision', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)' }} tick={{ fill: 'var(--text-muted)' }} />
+                            <Tooltip contentStyle={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--text)' }} />
                             <ReferenceLine x={threshold} stroke="red" strokeDasharray="3 3" label={{ value: 'Current', fill: 'red', fontSize: 12 }} />
                             <Area type="monotone" dataKey="precision" stroke="var(--primary)" fill="url(#colorMetric)" strokeWidth={3} />
                         </AreaChart>
@@ -149,13 +149,13 @@ const StatsDashboard = () => {
                                 dataKey="feature"
                                 type="category"
                                 width={120}
-                                tick={{ fill: '#e2e8f0' }}
+                                tick={{ fill: 'var(--text-muted)' }}
                                 axisLine={false}
                                 tickLine={false}
                             />
                             <Tooltip
-                                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', color: '#f8fafc' }}
+                                cursor={{ fill: 'var(--card-border)' }}
+                                contentStyle={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)', color: 'var(--text)' }}
                             />
                             <Bar dataKey="importance" radius={[0, 4, 4, 0]} barSize={20}>
                                 {stats.feature_importance && stats.feature_importance.slice(0, 7).map((entry, index) => (

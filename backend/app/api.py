@@ -90,6 +90,28 @@ async def forecast_ph(input_data: pHForecastInput):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
+# In-memory store for the latest sensor reading (Simulator/ESP32 pushes here)
+latest_sensor_data = {}
+
+@router.post("/sensors/reading")
+async def receive_sensor_data(data: WaterQualityInput):
+    """
+    Endpoint for ESP32 or Simulator to push data.
+    """
+    global latest_sensor_data
+    latest_sensor_data = data.model_dump()
+    return {"status": "received", "timestamp": "now"}
+
+@router.get("/sensors/latest", response_model=WaterQualityInput)
+async def get_latest_sensor_data():
+    """
+    Endpoint for Frontend to poll in 'Live Mode'.
+    """
+    if not latest_sensor_data:
+        raise HTTPException(status_code=404, detail="No sensor data available")
+    return latest_sensor_data
+
 @router.post("/iot/readings")
 async def receive_iot_reading(reading: IoTReading):
     """
@@ -112,3 +134,4 @@ async def receive_iot_reading(reading: IoTReading):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

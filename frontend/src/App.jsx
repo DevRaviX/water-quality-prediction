@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, Activity, Droplets, FlaskConical, FileText } from 'lucide-react';
+import { Home, Activity, Droplets, FlaskConical, FileText, Sun, Moon } from 'lucide-react';
 import InputForm from './components/InputForm';
 import StatsDashboard from './components/StatsDashboard';
 import DataLab from './components/DataLab';
@@ -96,6 +96,17 @@ const NavBase = ({ className, itemClass }) => {
 };
 
 const Layout = ({ children }) => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <div className="app-container">
       {/* Mobile Header */}
@@ -115,8 +126,28 @@ const Layout = ({ children }) => {
 
         <NavBase className="sidebar-nav" itemClass="sidebar-link" />
 
-        <div style={{ padding: '20px', borderTop: '1px solid var(--card-border)', background: 'rgba(0,0,0,0.2)' }}>
-          <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '1px', color: '#64748b', marginBottom: '15px' }}>Project Lead</h3>
+        <div className="sidebar-footer">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
+            <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '1px', color: '#64748b', margin: 0 }}>Project Lead</h3>
+
+            <button
+              onClick={toggleTheme}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '6px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                color: theme === 'dark' ? '#fbbf24' : '#64748b',
+                transition: 'all 0.2s'
+              }}
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <TeamMember initials="RG" name="Ravi Kant Gupta" role="Lead ML Engineer" />
