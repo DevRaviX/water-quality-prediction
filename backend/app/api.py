@@ -1,3 +1,4 @@
+from fastapi import APIRouter, HTTPException
 from .schema import (
     WaterQualityInput, PredictionResponse, StatsResponse,
     HealthResponse, pHForecastInput, pHForecastResponse, IoTReading
