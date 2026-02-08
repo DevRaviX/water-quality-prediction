@@ -77,8 +77,7 @@ const StatsDashboard = () => {
 
             {/* Interactive Threshold Plot */}
             <motion.div
-                className="stat-card"
-                style={{ gridColumn: 'span 2' }} // Span full width on desktop
+                className="stat-card col-span-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -108,7 +107,7 @@ const StatsDashboard = () => {
                     </div>
                 </div>
 
-                <div style={{ height: '300px' }}>
+                <div style={{ height: '300px', width: '100%', minWidth: 0 }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={curveData}>
                             <defs>
@@ -133,11 +132,10 @@ const StatsDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="stat-card"
-                style={{ gridColumn: 'span 2' }}
+                className="stat-card col-span-2"
             >
                 <h3>Global Feature Importance (SHAP)</h3>
-                <div className="chart-wrapper" style={{ height: '250px' }}>
+                <div className="chart-wrapper" style={{ height: '250px', width: '100%', minWidth: 0 }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={stats.feature_importance ? stats.feature_importance.slice(0, 7) : []}
