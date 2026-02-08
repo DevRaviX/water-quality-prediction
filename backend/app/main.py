@@ -11,10 +11,10 @@ app = FastAPI(title="Water Quality Prediction System", version="1.0.0")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "*"], 
+    allow_origins=["*"],  # Allows all IPs
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows GET, POST, etc.
+    allow_headers=["*"],  # Allows all headers
 )
 
 app.include_router(router, prefix="/api")

@@ -107,7 +107,7 @@ const StatsDashboard = () => {
                     </div>
                 </div>
 
-                <div style={{ height: '300px', width: '100%', minWidth: 0 }}>
+                <div className="w-full h-64 min-h-[300px] bg-gray-800 p-4 rounded-xl shadow-lg">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={curveData}>
                             <defs>
@@ -135,7 +135,7 @@ const StatsDashboard = () => {
                 className="stat-card col-span-2"
             >
                 <h3>Global Feature Importance (SHAP)</h3>
-                <div className="chart-wrapper" style={{ height: '250px', width: '100%', minWidth: 0 }}>
+                <div className="chart-wrapper w-full h-64 min-h-[300px] bg-gray-800 p-4 rounded-xl shadow-lg">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                             data={stats.feature_importance ? stats.feature_importance.slice(0, 7) : []}

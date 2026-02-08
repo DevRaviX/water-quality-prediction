@@ -108,7 +108,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container bg-gray-900 min-h-screen text-white">
       {/* Mobile Header */}
       <header className="app-header">
         <div className="logo">
@@ -157,7 +157,7 @@ const Layout = ({ children }) => {
         </div>
       </aside>
 
-      <main className="main-content">
+      <main className="main-content bg-gray-900 text-gray-100">
         {children}
       </main>
 
